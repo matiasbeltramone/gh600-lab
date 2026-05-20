@@ -43,13 +43,23 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
-          # Opción A (si tenés API key de Anthropic):
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 
-          # Opción B (usuarios con Claude Pro/Max via OAuth):
-          # generá el token con `claude setup-token` y guardalo como
-          # CLAUDE_CODE_OAUTH_TOKEN en Settings → Secrets → Actions
-          # claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Setear `prompt` cambia el modo de "tag" a "agent" y saltea el
+          # system prompt interno del action que fuerza el link "Create PR".
+          # `track_progress: true` mantiene el comentario con checkboxes que
+          # tag mode da por defecto.
+          track_progress: true
+          prompt: |
+            Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            Implementá el issue siguiendo lo que dice CLAUDE.md del repo.
+            Después de commitear y pushear la branch, usá
+            mcp__github__create_pull_request para abrir un PR draft (draft: true)
+            contra main, con título descriptivo y body que incluya "Closes #${{ github.event.issue.number }}".
+            NO dejes un link de "Create PR", creá el PR directo con la tool.
 
           claude_args: |
-            --allowedTools "Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Bash(npx tsc:*),Bash(gh pr create:*),Bash(git checkout:*),Bash(git branch:*)"
+            --allowedTools "mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash"
