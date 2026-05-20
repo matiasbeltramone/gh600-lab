@@ -40,10 +40,10 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
-          # Opción A (recomendada para usuarios de Claude Code local):
+          # Opción A (si tenés API key de Anthropic):
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # Opción B (usuarios con Claude Pro/Max via OAuth):
           # generá el token con `claude setup-token` y guardalo como
           # CLAUDE_CODE_OAUTH_TOKEN en Settings → Secrets → Actions
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-
-          # Opción B (si tenés API key de Anthropic):
-          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
