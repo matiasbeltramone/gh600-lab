@@ -4,3 +4,9 @@ export function handleHealth() {
     buildSha: process.env.BUILD_SHA ?? "unknown",
   };
 }
+
+export function handleVersion() {
+  return {
+    version: process.env.BUILD_SHA ?? "unknown",
+  };
+}
