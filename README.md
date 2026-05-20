@@ -1,6 +1,6 @@
 # gh600-lab
 
-Repo compañero del **LAB del apunte 6** del cuaderno [GH-600: GitHub Agentic AI](https://blog.matiasbeltramone.com/apuntes/github-agentic-ai/lab-setup-base-copilot-coding-agent) del blog [fundamentals-astro](https://blog.matiasbeltramone.com).
+Repo compañero del **LAB del apunte 6** del cuaderno [GH-600: GitHub Agentic AI](https://matiasbeltramone.com/apuntes/github-agentic-ai/lab-setup-base-copilot-coding-agent) en [matiasbeltramone.com](https://matiasbeltramone.com).
 
 ## ¿Qué pasó acá?
 
