@@ -23,3 +23,10 @@ El paso a paso completo y el reasoning detrás de cada decisión están en el ap
 - Node 22+, TypeScript estricto, ESM.
 - vitest para tests.
 - GitHub Actions + `claude-code-action` para el agente cloud.
+
+## Notas del equipo
+
+Resumen generado a partir del MCP server `notes` (solo notas no-secretas):
+
+- **Setup repo** — Crear el repo con `gh repo create` y armar el `.gitignore` antes de cualquier commit; no commitear `node_modules`.
+- **Branch protection** — Activar branch protection en `main` vía `gh api PUT branches/main/protection` exigiendo al menos un review aprobado (`required_approving_review_count=1`).
