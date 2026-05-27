@@ -39,6 +39,13 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Build MCP notes server + seed DB
+        run: |
+          cd mcp/notes-server
+          npm ci
+          npm run build
+          node --experimental-strip-types scripts/seed.ts notes.db
+
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
@@ -62,4 +69,4 @@ jobs:
             NO dejes un link de "Create PR", creá el PR directo con la tool.
 
           claude_args: |
-            --allowedTools "mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash"
+            --allowedTools "mcp__notes__list_notes,mcp__notes__read_note,mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash"
