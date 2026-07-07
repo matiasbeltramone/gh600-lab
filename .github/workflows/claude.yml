@@ -6,7 +6,10 @@ on:
   pull_request_review_comment:
     types: [created]
   issues:
-    types: [opened, assigned]
+    # Solo [opened]: con [opened, assigned] el issue dispara dos runs
+    # (creación + assign), duplicando el trabajo y el costo. Acotado para
+    # el experimento; reponer 'assigned' si se quiere en uso real.
+    types: [opened]
   pull_request_review:
     types: [submitted]
 
@@ -76,3 +79,16 @@ jobs:
           # NO documentado por Anthropic; esto es un experimento.
           claude_args: |
             --allowedTools "mcp__notes__list_notes,mcp__notes__read_note,mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash,Task,Grep,Glob"
+
+      # Persiste el stream turno-por-turno de Claude como artifact. El log
+      # de Actions solo retiene el init + el result final; el detalle (las
+      # llamadas a tools, incluida Task/subagentes) vive en execution_file
+      # y se pierde con el runner. Lo subimos para poder verificar si hubo
+      # delegación real: buscamos "name":"Task" + "subagent_type" en el JSON.
+      - name: Subir execution stream como artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-execution-issue-${{ github.event.issue.number }}
+          path: ${{ steps.claude.outputs.execution_file }}
+          if-no-files-found: warn
