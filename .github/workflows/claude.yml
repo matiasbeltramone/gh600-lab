@@ -68,5 +68,11 @@ jobs:
             contra main, con título descriptivo y body que incluya "Closes #${{ github.event.issue.number }}".
             NO dejes un link de "Create PR", creá el PR directo con la tool.
 
+          # `Task` habilita que el agente principal delegue a los subagentes
+          # de .claude/agents/ (researcher/editor). `Grep`/`Glob` son las
+          # tools read-only que declara el researcher: sin ellas, en headless
+          # quedarían denegadas y el researcher no podría leer el repo.
+          # NOTA: la delegación a subagentes en el Action es comportamiento
+          # NO documentado por Anthropic; esto es un experimento.
           claude_args: |
-            --allowedTools "mcp__notes__list_notes,mcp__notes__read_note,mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash"
+            --allowedTools "mcp__notes__list_notes,mcp__notes__read_note,mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash,Task,Grep,Glob"
