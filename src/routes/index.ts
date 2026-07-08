@@ -1,6 +1,6 @@
 export function handleHealth() {
   return {
-    status: "ok",
+    status: "healthy",
     buildSha: process.env.BUILD_SHA ?? "unknown",
   };
 }
