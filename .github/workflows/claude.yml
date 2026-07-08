@@ -71,20 +71,20 @@ jobs:
             contra main, con título descriptivo y body que incluya "Closes #${{ github.event.issue.number }}".
             NO dejes un link de "Create PR", creá el PR directo con la tool.
 
-          # `Task` habilita que el agente principal delegue a los subagentes
-          # de .claude/agents/ (researcher/editor). `Grep`/`Glob` son las
-          # tools read-only que declara el researcher: sin ellas, en headless
-          # quedarían denegadas y el researcher no podría leer el repo.
-          # NOTA: la delegación a subagentes en el Action es comportamiento
-          # NO documentado por Anthropic; esto es un experimento.
+          # VERIFICADO (jul-2026): en headless el Action carga los subagentes
+          # de .claude/agents/ (researcher/editor) y delega de verdad. La tool
+          # de delegación se llama `Agent` (no `Task`) y NO hace falta
+          # allow-listearla. `Grep`/`Glob` sí: son las tools read-only del
+          # researcher, y en headless lo que no está acá queda denegado (sin
+          # ellas no podría leer el repo).
           claude_args: |
-            --allowedTools "mcp__notes__list_notes,mcp__notes__read_note,mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash,Task,Grep,Glob"
+            --allowedTools "mcp__notes__list_notes,mcp__notes__read_note,mcp__github__create_pull_request,Bash(npm install),Bash(npm test),Bash(npm run typecheck),Bash(npx tsc --noEmit),Edit,Write,Read,Bash,Grep,Glob"
 
       # Persiste el stream turno-por-turno de Claude como artifact. El log
       # de Actions solo retiene el init + el result final; el detalle (las
-      # llamadas a tools, incluida Task/subagentes) vive en execution_file
-      # y se pierde con el runner. Lo subimos para poder verificar si hubo
-      # delegación real: buscamos "name":"Task" + "subagent_type" en el JSON.
+      # llamadas a tools, incluida la delegación) vive en execution_file y se
+      # pierde con el runner. Se inspecciona buscando "name":"Agent" +
+      # "subagent_type" en el JSON descargado con `gh run download`.
       - name: Subir execution stream como artifact
         if: always()
         uses: actions/upload-artifact@v4
