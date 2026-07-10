@@ -19,3 +19,11 @@ export function createSession(userId: string, now: number = Date.now()): Session
 export function isExpired(session: Session, now: number = Date.now()): boolean {
   return now > session.issuedAt + session.ttlSeconds * 1000;
 }
+
+export function refreshSession(session: Session, now: number = Date.now()): Session {
+  return {
+    userId: session.userId,
+    issuedAt: now,
+    ttlSeconds: session.ttlSeconds,
+  };
+}
