@@ -1,0 +1,10 @@
+# .github/CODEOWNERS
+# Paths sensibles: el merge requiere review del owner del path.
+# Combinado con el ruleset (require_code_owner_review), es un gate duro.
+#
+# Nota del LAB (delta vs Copilot): en una cuenta solo no hay equipos
+# (@org/security-team), así que el owner es el propio usuario. Funciona
+# como gate porque el PR lo abre la app `claude`, no el humano: autor != revisor.
+
+/src/auth/     @matiasbeltramone
+/.github/      @matiasbeltramone
